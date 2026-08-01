@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Misc
+*.bak
+*.tmp
+
+# Documentation (keep local, don't commit)
+REFACTORING.md
+ARCHITECTURE.md
+DEVELOPER_GUIDE.md
+FIXES.md
+STORAGE.md
+CODEBASE_GUIDE.md
