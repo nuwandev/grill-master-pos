@@ -271,11 +271,10 @@ export class MenuScreen {
 
   openEditModal(productId) {
     this.editingProduct = store.getState().products.find(
-      (prod) => prod.id == productId // Use == for type coercion
+      (prod) => String(prod.id) === String(productId)
     );
     if (this.editingProduct) {
       this.showProductModal();
-    } else {
     }
   }
 

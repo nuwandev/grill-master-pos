@@ -257,8 +257,9 @@ export class NewOrderScreen {
 
   selectCustomer(customerId) {
     const state = store.getState();
-    // Use == for type coercion (onclick passes string but IDs might be numbers)
-    const customer = state.customers.find((c) => c.id == customerId);
+    const customer = state.customers.find(
+      (c) => String(c.id) === String(customerId)
+    );
     if (customer) {
       setCurrentCustomer(customer);
       this.updateCustomerSection();
@@ -374,7 +375,7 @@ export class NewOrderScreen {
       allCustomerItems.forEach((item) => {
         const customerId = item.getAttribute('data-customer-id');
         const isSelected =
-          selectedCustomer && customerId == selectedCustomer.id;
+          selectedCustomer && customerId === String(selectedCustomer.id);
 
         // Update classes
         if (isSelected) {

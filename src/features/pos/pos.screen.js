@@ -1010,8 +1010,7 @@ export class POSScreen {
 
   updateCartSection() {
     const html = this.renderCartSection();
-    const element = document.querySelector('[data-cart-section]');
-    const success = updateSection('[data-cart-section]', html);
+    updateSection('[data-cart-section]', html);
   }
 
   updateProductGrid() {

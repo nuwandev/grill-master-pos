@@ -191,7 +191,8 @@ export function removeFromCart(store, productId) {
 export function updateCartQuantity(store, productId, quantity) {
   // If quantity is 0 or negative, remove item instead
   if (quantity <= 0) {
-    return removeFromCart(store, productId);
+    removeFromCart(store, productId);
+    return;
   }
 
   const state = store.getState();
