@@ -298,7 +298,7 @@ export class POSScreen {
   renderSuccessModal() {
     const order = store
       .getState()
-      .orders.find((ord) => ord.id === this.lastOrderId);
+      .orders.find((ord) => String(ord.id) === String(this.lastOrderId));
     if (!order) {
       return '';
     }
@@ -369,7 +369,7 @@ export class POSScreen {
     try {
       const product = store
         .getState()
-        .products.find((prod) => prod.id === productId);
+        .products.find((prod) => String(prod.id) === String(productId));
       if (product) {
         addToCart(product);
         this.updateCartSection();
@@ -954,7 +954,9 @@ export class POSScreen {
   }
 
   printReceipt(orderId) {
-    const order = store.getState().orders.find((ord) => ord.id === orderId);
+    const order = store
+      .getState()
+      .orders.find((ord) => String(ord.id) === String(orderId));
     if (!order) {
       return;
     }

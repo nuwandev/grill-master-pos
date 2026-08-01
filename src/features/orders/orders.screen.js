@@ -243,7 +243,9 @@ export class OrdersScreen {
   }
 
   async handleMarkPaid(orderId) {
-    const order = store.getState().orders.find((ord) => ord.id === orderId);
+    const order = store
+      .getState()
+      .orders.find((ord) => String(ord.id) === String(orderId));
     if (!order) {
       toast('Order not found', 'error');
       return;
@@ -277,7 +279,9 @@ export class OrdersScreen {
   }
 
   viewDetails(orderId) {
-    const order = store.getState().orders.find((ord) => ord.id === orderId);
+    const order = store
+      .getState()
+      .orders.find((ord) => String(ord.id) === String(orderId));
     if (!order) {
       toast('Order not found', 'error');
       return;

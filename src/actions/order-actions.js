@@ -5,6 +5,10 @@ import { generateId } from '../utils/helpers.js';
 import { logger } from '../utils/logger.js';
 import { validateOrder } from '../utils/validators.js';
 
+function idsMatch(left, right) {
+  return String(left) === String(right);
+}
+
 // Set current order type (dine-in, takeout, delivery)
 export function setOrderType(store, type) {
   store.setState({ currentOrderType: type });
@@ -72,7 +76,9 @@ export function placeOrder(store, paymentMethod = 'cash', options = {}) {
 // Update existing order
 export function updateOrder(store, orderId, updates) {
   const state = store.getState();
-  const orderIndex = state.orders.findIndex((ord) => ord.id === orderId);
+  const orderIndex = state.orders.findIndex((ord) =>
+    idsMatch(ord.id, orderId)
+  );
 
   if (orderIndex === -1) {
     return { success: false, error: 'Order not found' };
@@ -88,7 +94,9 @@ export function updateOrder(store, orderId, updates) {
 // Delete order
 export function deleteOrder(store, orderId) {
   const state = store.getState();
-  const filteredOrders = state.orders.filter((ord) => ord.id !== orderId);
+  const filteredOrders = state.orders.filter(
+    (ord) => !idsMatch(ord.id, orderId)
+  );
 
   if (filteredOrders.length === state.orders.length) {
     return { success: false, error: 'Order not found' };
@@ -101,7 +109,7 @@ export function deleteOrder(store, orderId) {
 // Mark order as paid and calculate change
 export function markOrderPaid(store, orderId, amount) {
   const state = store.getState();
-  const order = state.orders.find((ord) => ord.id === orderId);
+  const order = state.orders.find((ord) => idsMatch(ord.id, orderId));
 
   if (!order) {
     return { success: false, error: 'Order not found' };

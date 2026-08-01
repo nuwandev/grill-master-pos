@@ -161,7 +161,8 @@ export class NewOrderScreen {
   }
 
   renderCustomerItem(customer) {
-    const isSelected = store.getState().currentCustomer?.id === customer.id;
+    const isSelected =
+      String(store.getState().currentCustomer?.id) === String(customer.id);
     return `
       <div data-customer-id="${customer.id}" onclick="newOrderScreen.selectCustomer('${customer.id}')" class="flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 cursor-pointer transition-colors ${isSelected ? 'bg-primary/10 border-l-4 border-primary' : ''}">
         <div class="w-10 h-10 rounded-full bg-neutral-200 flex items-center justify-center font-bold text-neutral-600 text-sm">${customer.name.charAt(0).toUpperCase()}</div>

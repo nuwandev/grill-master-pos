@@ -4,6 +4,10 @@
 import { generateId } from '../utils/helpers.js';
 import { validateCustomer } from '../utils/validators.js';
 
+function idsMatch(left, right) {
+  return String(left) === String(right);
+}
+
 // Set currently selected customer
 export function setCurrentCustomer(store, customer) {
   store.setState({ currentCustomer: customer });
@@ -54,7 +58,9 @@ export function addCustomer(store, name, phone = '', email = '') {
 // Update existing customer
 export function updateCustomer(store, id, updates) {
   const state = store.getState();
-  const customerIndex = state.customers.findIndex((cust) => cust.id === id);
+  const customerIndex = state.customers.findIndex((cust) =>
+    idsMatch(cust.id, id)
+  );
 
   if (customerIndex === -1) {
     return { success: false, error: 'Customer not found' };
@@ -72,7 +78,7 @@ export function updateCustomer(store, id, updates) {
   store.setState({ customers });
 
   // Update current customer if it's the one being edited
-  if (state.currentCustomer?.id === id) {
+  if (idsMatch(state.currentCustomer?.id, id)) {
     store.setState({ currentCustomer: customer });
   }
 
@@ -82,15 +88,15 @@ export function updateCustomer(store, id, updates) {
 // Delete customer
 export function deleteCustomer(store, customerId) {
   // Prevent deleting Guest customer (id 0 or 1)
-  if (customerId === 0 || customerId === 1) {
+  if (idsMatch(customerId, 0) || idsMatch(customerId, 1)) {
     return { success: false, error: 'Cannot delete Guest customer' };
   }
 
   const state = store.getState();
-  const wasSelected = state.currentCustomer?.id === customerId;
+  const wasSelected = idsMatch(state.currentCustomer?.id, customerId);
 
   store.setState({
-    customers: state.customers.filter((cust) => cust.id !== customerId),
+    customers: state.customers.filter((cust) => !idsMatch(cust.id, customerId)),
   });
 
   // Reset to Guest if deleted customer was selected

@@ -370,7 +370,7 @@ export class MenuScreen {
   async handleDelete(productId) {
     const product = store
       .getState()
-      .products.find((prod) => prod.id === productId);
+      .products.find((prod) => String(prod.id) === String(productId));
     if (!product) return;
 
     const confirmed = await confirm({

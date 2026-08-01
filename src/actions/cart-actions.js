@@ -32,6 +32,10 @@
  */
 const MAX_HISTORY = 5;
 
+function idsMatch(left, right) {
+  return String(left) === String(right);
+}
+
 /**
  * Record an action for undo functionality
  *
@@ -107,14 +111,14 @@ export function addToCart(store, product) {
 
   // Check if product already in cart
   // Using == (not ===) for type coercion (string '1' matches number 1)
-  const existingItem = state.cart.find((item) => item.id === product.id);
+  const existingItem = state.cart.find((item) => idsMatch(item.id, product.id));
 
   if (existingItem) {
     // CASE 1: Product exists → Increment quantity
     // Use map to create new array with updated item
     const updatedCart = state.cart.map(
       (item) =>
-        item.id === product.id
+        idsMatch(item.id, product.id)
           ? { ...item, quantity: item.quantity + 1 } // Update this item
           : item // Keep other items same
     );
@@ -156,10 +160,12 @@ export function removeFromCart(store, productId) {
   const previousCart = [...state.cart];
 
   // Find item (for name in undo label)
-  const item = state.cart.find((i) => i.id === productId);
+  const item = state.cart.find((i) => idsMatch(i.id, productId));
 
   // Filter creates new array WITHOUT the removed item
-  const updatedCart = state.cart.filter((item) => item.id !== productId);
+  const updatedCart = state.cart.filter(
+    (item) => !idsMatch(item.id, productId)
+  );
 
   // Update store
   store.setState({ cart: updatedCart });
@@ -201,12 +207,12 @@ export function updateCartQuantity(store, productId, quantity) {
   const previousCart = [...state.cart];
 
   // Find item (for name in undo label)
-  const item = state.cart.find((i) => i.id === productId);
+  const item = state.cart.find((i) => idsMatch(i.id, productId));
 
   // Map creates new array with updated quantity
   const updatedCart = state.cart.map(
     (item) =>
-      item.id === productId
+      idsMatch(item.id, productId)
         ? { ...item, quantity } // Update this item's quantity
         : item // Keep other items same
   );

@@ -6,6 +6,10 @@ import { generateId } from '../utils/helpers.js';
 import { logger } from '../utils/logger.js';
 import { validateProduct } from '../utils/validators.js';
 
+function idsMatch(left, right) {
+  return String(left) === String(right);
+}
+
 // Add new product
 export function addProduct(
   store,
@@ -57,7 +61,9 @@ export function addProduct(
 // Update existing product
 export function updateProduct(store, id, updates) {
   const state = store.getState();
-  const productIndex = state.products.findIndex((prod) => prod.id === id);
+  const productIndex = state.products.findIndex((prod) =>
+    idsMatch(prod.id, id)
+  );
 
   if (productIndex === -1) {
     return { success: false, error: 'Product not found' };
@@ -84,7 +90,7 @@ export function updateProduct(store, id, updates) {
 export function deleteProduct(store, productId) {
   const state = store.getState();
   store.setState({
-    products: state.products.filter((prod) => prod.id !== productId),
+    products: state.products.filter((prod) => !idsMatch(prod.id, productId)),
   });
 
   return { success: true };
